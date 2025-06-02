@@ -3,8 +3,8 @@ POST http://localhost:8003/order
 Content-Type: application/json
 
 {
-    "order_id": "20250002",
-    "product_id" : 110013949001,
+    "order_id": 20250001,
+    "product_id" : 110013949002,
     "quantity" : 10
 }
 
@@ -19,3 +19,13 @@ Content-Type: application/json
 # Order request
 GET http://localhost:8003/order/20250001
 Content-Type: application/json
+
+###
+PUT http://localhost:8003/order/20250002
+Content-Type: application/json
+
+{
+    "order_id": 20250002,
+    "product_id" : 110013949001,
+    "quantity" : 10
+}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product Management</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Product Management</h1>
+        <a href="/logout" class="logout-btn">Logout</a>
+        <h2>Add Product</h2>
+        <form action="/add_product" method="post" class="product-form">
+            <input name="id" type="number" placeholder="ID" required>
+            <input name="name" type="text" placeholder="Name" required>
+            <input name="price" type="number" step="0.01" placeholder="Price" required>
+            <input name="stock" type="number" placeholder="Stock" required>
+            <button type="submit">Add</button>
+        </form>
+        <h2>Products</h2>
+        <table>
+            <tr>
+                <th>ID</th><th>Name</th><th>Price</th><th>Stock</th><th>Actions</th>
+            </tr>
+            {% for product in products %}
+            <tr>
+                <td>{{ product.id }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.price }}</td>
+                <td>{{ product.stock }}</td>
+                <td>
+                    <a href="/edit_product/{{ product.id }}">Edit</a>
+                    <form action="/delete_product/{{ product.id }}" method="post" style="display:inline;">
+                        <button type="submit" onclick="return confirm('Delete product?')">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,43 @@
+### Zahlung anlegen (CREATE)
+POST http://localhost:8004/pay
+Content-Type: application/json
+
+{
+    "order_id": 20250001,
+    "amount": 5
+}
+
+###
+
+POST http://localhost:8004/pay
+Content-Type: application/json
+
+{
+    "order_id": 20250002,
+    "amount": 19.95
+}
+
+###
+
+### Alle Zahlungen anzeigen (READ - Liste)
+GET http://localhost:8004/payments
+
+###
+
+### Einzelne Zahlung anzeigen (READ - Eintrag)
+GET http://localhost:8004/payments/1
+
+###
+
+GET http://localhost:8004/payments/2
+
+###
+
+### Zahlung löschen (DELETE)
+DELETE http://localhost:8004/payments/1
+
+###
+
+### Zahlungen nach dem Löschen anzeigen
+GET http://localhost:8004/payments
+
