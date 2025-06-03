@@ -161,3 +161,20 @@ use warehouse_db
 db.warehouse_data.find().pretty()
 ```
 ![img.png](img.png)
+
+# Befehle
+
+```
+docker-compose up --build
+docker-compose down -v
+```
+
+# Quellen
+
+https://kinsta.com/blog/python-microservices/ , 03/06/2025
+
+https://realpython.com/crud-operations/ , 03/06/2025
+
+https://www.w3schools.com/python/python_mongodb_getstarted.asp , 03/06/2025
+
+https://www.mongodb.com/docs/drivers/motor/ , 03/06/2025
