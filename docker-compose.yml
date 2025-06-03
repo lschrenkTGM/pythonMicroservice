@@ -1,18 +1,40 @@
 version: '3'
+
 services:
   user_service:
     build: ./user_service
     ports:
       - "8001:8001"
+
   product_service:
     build: ./product_service
     ports:
       - "8002:8002"
+
   order_service:
     build: ./order_service
     ports:
       - "8003:8003"
+
   payment_service:
     build: ./payment_service
     ports:
       - "8004:8004"
+
+  mongo:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  warehouse_service:
+    build: ./warehouse_service
+    ports:
+      - "4441:4441"
+    depends_on:
+      - mongo
+
+volumes:
+  mongo_data:

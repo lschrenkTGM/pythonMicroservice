@@ -94,4 +94,70 @@
 - Das System ist bereit für weitere Erweiterungen.
 
 ---
+EKv
+---
 
+## **1. Einrichtung Warehouse-Service**
+- Neues Verzeichnis `warehouse_service` angelegt.
+- FastAPI-Projekt erstellt (`main.py`).
+- Dockerfile hinzugefügt und in `docker-compose.yml` eingebunden.
+- MongoDB über Docker als persistente Datenbank angebunden.
+- Verbindung zur Datenbank mit Motor (async MongoDB Client) hergestellt.
+- `warehouse_data`-Collection in `warehouse_db` verwendet.
+
+---
+
+## **2. GUI-Funktionalitäten**
+- Templates mit Jinja2 erstellt:
+  - `warehouses.html` (Übersicht)
+  - `edit_warehouse.html` (Bearbeitung einzelner Lager)
+- CSS-Styling über `/static/style.css` implementiert.
+- GUI bietet Funktionen:
+  - Übersicht aller Lager
+  - Lager bearbeiten (Name, PLZ, Ort, Land)
+  - Produkt zu Lager hinzufügen (über Produkt-ID)
+  - Produkte anzeigen und bearbeiten
+
+---
+
+## **3. Anbindung an `product_service`**
+- Produktinformationen werden **nicht in Mongo gespeichert**, sondern bei jedem Request über `product_service` aufgelöst.
+- Kommunikation über HTTP (`http://product_service:8002/product/{id}`)
+- Fehler bei Erreichbarkeit oder Antwort werden abgefangen.
+
+---
+
+## **4. Produkt hinzufügen / bearbeiten**
+- Neues Mapping im Warehouse-Service:
+  - `POST /add_product/{warehouse_id}` fügt Produkt ins Lager ein (per ID)
+  - `POST /update_product_in_warehouse/{warehouse_id}/{product_id}` bearbeitet Produktdaten direkt per Formular
+- Die Formularansicht zeigt pro Produkt Eingabefelder + "Ändern"/"Löschen"-Buttons.
+- Änderungen triggern einen POST an den `product_service`.
+
+---
+
+## **5. Authentifizierung zwischen Services**
+- Der `product_service` verlangt einen Login für Änderungen.
+- Lösung: Passwort und Username im Bearbeitungsformular abfragen.
+- Neuer Ablauf:
+  - Warehouse-Service sendet Login-Request an `user_service`.
+  - Session-Cookie wird entnommen und für den eigentlichen Update-Request mitgesendet.
+  - Funktioniert auch über interne Kommunikation dank Docker-Network (`http://user_service:8001/login`)
+
+---
+
+## **6. Fehlerbehandlung / Logging**
+- Fehlerhafte Produkt-IDs, fehlende Felder und HTTP-Fehler werden sauber geloggt.
+- Beispiel: 422 bei fehlenden Auth-Feldern, 404 bei unbekannter Produkt-ID.
+- Statuscodes und Response-Text werden in der Konsole ausgegeben.
+
+---
+
+## **7. Datenbankzugriff (MongoDB)**
+- Kein GUI-Zugriff gewünscht → Zugriff über CLI:
+```bash
+docker exec -it mongodb mongosh
+use warehouse_db
+db.warehouse_data.find().pretty()
+```
+![img.png](img.png)

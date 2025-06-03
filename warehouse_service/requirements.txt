@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+motor
+jinja2
+python-multipart
+requests

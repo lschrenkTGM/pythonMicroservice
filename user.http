@@ -21,6 +21,16 @@ Content-Type: application/json
 }
 
 ###
+POST http://localhost:8001/signup
+Content-Type: application/json
+
+{
+    "username" : "test",
+    "email" : "test@gmail.com",
+    "password" : "123"
+}
+
+###
 
 # Login - Antonia Bauer
 POST http://localhost:8001/login

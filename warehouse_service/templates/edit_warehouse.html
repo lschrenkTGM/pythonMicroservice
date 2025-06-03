@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Edit Warehouse</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <h1>Bearbeite {{ warehouse.warehouseName }}</h1>
+  <form action="/update/{{ warehouse._id }}" method="post">
+    <input name="warehouseName" value="{{ warehouse.warehouseName }}" required>
+    <input name="warehousePostalCode" value="{{ warehouse.warehousePostalCode }}" required>
+    <input name="warehouseCity" value="{{ warehouse.warehouseCity }}" required>
+    <input name="warehouseCountrz" value="{{ warehouse.warehouseCountrz }}" required>
+    <button type="submit">Speichern</button>
+  </form>
+
+  <h2>Produkte im Lager</h2>
+  <ul>
+    {% for p in warehouse.productData %}
+      <li>
+        <form action="/update_product_in_warehouse/{{ warehouse._id }}/{{ p.id }}" method="post" style="display:inline;">
+          <input name="name" value="{{ p.name }}" required>
+          <input name="price" type="number" step="0.01" value="{{ p.price }}" required>
+          <input name="stock" type="number" value="{{ p.stock }}" required>
+
+         <h4>Anmeldung für Änderung</h4>  <!-- Neue Felder -->
+        <input name="username" placeholder="Username" required>
+        <input name="password" placeholder="Password" type="password" required>
+    <br>
+          <button type="submit">Ändern</button>
+        </form>
+
+        <form method="post" action="/delete_product/{{ warehouse._id }}/{{ p.id }}" style="display:inline;">
+          <button type="submit">Entfernen</button>
+        </form>
+      </li>
+    {% endfor %}
+  </ul>
+
+  <h3>Neues Produkt hinzufügen</h3>
+  <form action="/add_product/{{ warehouse._id }}" method="post">
+    <input name="productID" placeholder="Produkt-ID" required>
+    <button type="submit">Hinzufügen</button>
+  </form>
+
+  <p><a href="/">Zurück</a></p>
+</body>
+</html>

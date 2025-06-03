@@ -28,6 +28,8 @@ products_db = {}
 def is_logged_in(request: Request):
     return request.cookies.get("session") == "ok"
 
+
+
 @app.get("/login")
 def login_form(request: Request):
     return templates.TemplateResponse("login.html", {"request": request, "error": None})

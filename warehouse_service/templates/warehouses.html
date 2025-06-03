@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Alle Lager</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <h1>Alle Lager</h1>
+
+  {% for warehouse in warehouses %}
+    <div style="border: 1px solid #ccc; margin-bottom: 2em; padding: 1em;">
+      <h2>{{ warehouse.warehouseName }}</h2>
+      <p>PLZ: {{ warehouse.warehousePostalCode }}, {{ warehouse.warehouseCity }} ({{ warehouse.warehouseCountrz }})</p>
+
+      <h3>Produkte</h3>
+      {% if warehouse.productData %}
+        <ul>
+          {% for p in warehouse.productData %}
+            <li>{{ p.name }} – {{ p.price }} € (Lagerstand: {{ p.stock }})</li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p><i>Keine Produkte vorhanden.</i></p>
+      {% endif %}
+
+      <form action="/add_product/{{ warehouse._id }}" method="post">
+        <input name="productID" placeholder="Produkt-ID" required>
+        <button type="submit">Produkt hinzufügen</button>
+      </form>
+
+      <p>
+        <a href="/edit/{{ warehouse._id }}">Lager bearbeiten</a> |
+        <form action="/delete/{{ warehouse._id }}" method="post" style="display:inline;">
+          <button type="submit">Lager löschen</button>
+        </form>
+      </p>
+    </div>
+  {% endfor %}
+
+  <h2>Neues Lager anlegen</h2>
+  <form action="/add" method="post">
+    <input name="warehouseID" placeholder="ID" required>
+    <input name="warehouseName" placeholder="Name" required>
+    <input name="timestamp" placeholder="Zeitstempel (YYYY-MM-DD HH:MM:SS)" required>
+    <input name="warehousePostalCode" placeholder="PLZ" required>
+    <input name="warehouseCity" placeholder="Stadt" required>
+    <input name="warehouseCountrz" placeholder="Land" required>
+    <button type="submit">Hinzufügen</button>
+  </form>
+</body>
+</html>
